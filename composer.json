@@ -1,0 +1,21 @@
+{
+    "name": "ecommit/frequency-generator",
+    "description": "Get the next date by frequency.",
+    "keywords": ["frequency", "period", "day", "week", "month", "quart", "half year", "year", "dayly", "weekly", "monthly", "quartly", "yearly"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hubert Lecorche",
+            "email": "contact@e-commit.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Ecommit\\FrequencyGenerator\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
