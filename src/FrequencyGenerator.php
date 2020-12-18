@@ -1,6 +1,8 @@
 <?php
 
-/**
+declare(strict_types=1);
+
+/*
  * This file is part of the frequency-generator package.
  *
  * (c) E-commit <contact@e-commit.fr>
@@ -14,15 +16,16 @@ namespace Ecommit\FrequencyGenerator;
 class FrequencyGenerator
 {
     /**
-     * Return the next date for "every day" frequency
+     * Return the next date for "every day" frequency.
      *
      * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     *
      * @return \DateTime
      */
-    public function nextInEveryDay(array $times = array())
+    public function nextInEveryDay(array $times = [])
     {
         $times = $this->getDefaultHours($times);
-        $frequencies = array();
+        $frequencies = [];
 
         /** @var \DateTime $time */
         foreach ($times as $time) {
@@ -38,16 +41,18 @@ class FrequencyGenerator
     }
 
     /**
-     * Return the next date for "every week" frequency
+     * Return the next date for "every week" frequency.
      *
-     * @param array $days Array of days in week (integers). (1=Monday => 7=Sunday). Default: Only "1" (monday)
+     * @param array $days  Array of days in week (integers). (1=Monday => 7=Sunday). Default: Only "1" (monday)
      * @param array $times Array of DateTime objects. Default: Only "00:00:00"
-     * @return \DateTime
+     *
      * @throws \Exception
+     *
+     * @return \DateTime
      */
-    public function nextInEveryWeek(array $days, array $times = array())
+    public function nextInEveryWeek(array $days, array $times = [])
     {
-        $availabledDays = array(
+        $availabledDays = [
             1 => 'monday',
             2 => 'tuesday',
             3 => 'wednesday',
@@ -55,14 +60,14 @@ class FrequencyGenerator
             5 => 'friday',
             6 => 'saturday',
             7 => 'sunday',
-        );
+        ];
 
         $now = new \DateTime('now');
         $times = $this->getDefaultHours($times);
-        $frequencies = array();
+        $frequencies = [];
 
         foreach ($days as $day) {
-            if (!is_integer($day) || $day < 1 || $day > 7) {
+            if (!\is_int($day) || $day < 1 || $day > 7) {
                 throw new \Exception('Bad day '.$day);
             }
 
@@ -78,25 +83,27 @@ class FrequencyGenerator
     }
 
     /**
-     * Return the next date for "every month" frequency
+     * Return the next date for "every month" frequency.
      *
-     * @param array $days Array of days in month (integers). (1=>31). Default: Only "1" (1st)
+     * @param array $days  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
      * @param array $times Array of DateTime objects. Default: Only "00:00:00"
-     * @return \DateTime
+     *
      * @throws \Exception
+     *
+     * @return \DateTime
      */
-    public function nextInEveryMonth(array $days = array(1), array $times = array())
+    public function nextInEveryMonth(array $days = [1], array $times = [])
     {
         $times = $this->getDefaultHours($times);
-        $frequencies = array();
+        $frequencies = [];
 
         foreach ($days as $day) {
-            if (!is_integer($day) || $day < 1 || $day > 31) {
+            if (!\is_int($day) || $day < 1 || $day > 31) {
                 throw new \Exception('Bad day '.$day);
             }
 
             foreach ($times as $time) {
-                array_push($frequencies, $this->searchNextDayWithTimeMonthly(date('Y'), date('m'), $day, $time, true));
+                $frequencies[] = $this->searchNextDayWithTimeMonthly(date('Y'), date('m'), $day, $time, true);
             }
         }
 
@@ -104,73 +111,76 @@ class FrequencyGenerator
     }
 
     /**
-     * Return the next date for "every quart" frequency
+     * Return the next date for "every quart" frequency.
      *
      * @param array $monthOffsets Array of month offsets in quart (integers). (1 = January, April, July, October. 2 = February, May, August, November. 3 = March, June, September, December). Default: Only "1" (January, April, July, October)
-     * @param array $daysInMonth Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
+     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     *
      * @return \DateTime
      */
-    public function nextInEveryQuart(array $monthOffsets = array(1), array $daysInMonth = array(1), array $times = array())
+    public function nextInEveryQuart(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
-        $monthsByOffset = array(
-            1 => array(1, 4, 7, 10),
-            2 => array(2, 5, 8, 11),
-            3 => array(3, 6, 9, 12),
-        );
+        $monthsByOffset = [
+            1 => [1, 4, 7, 10],
+            2 => [2, 5, 8, 11],
+            3 => [3, 6, 9, 12],
+        ];
 
         return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
     }
 
     /**
-     * Return the next date for "every half year" frequency
+     * Return the next date for "every half year" frequency.
      *
      * @param array $monthOffsets Array of month offsets in half year (integers). (1 = January, July. 2 = February, August. 3 = March, September. 4 = April, October. 5 = May , November. 6 = June, December). Default: Only "1" (January, July)
-     * @param array $daysInMonth Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
+     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     *
      * @return \DateTime
      */
-    public function nextInEveryHalfYear(array $monthOffsets  = array(1), array $daysInMonth = array(1), array $times = array())
+    public function nextInEveryHalfYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
-        $monthsByOffset = array(
-            1 => array(1, 7),
-            2 => array(2, 8),
-            3 => array(3, 9),
-            4 => array(4, 10),
-            5 => array(5, 11),
-            6 => array(6, 12),
-        );
+        $monthsByOffset = [
+            1 => [1, 7],
+            2 => [2, 8],
+            3 => [3, 9],
+            4 => [4, 10],
+            5 => [5, 11],
+            6 => [6, 12],
+        ];
 
         return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
     }
 
     /**
-     * Return the next date for "every year" frequency
+     * Return the next date for "every year" frequency.
      *
      * @param array $monthOffsets Array of month offsets in year (integers). (1 = January => 12 => December). Default: Only "1" (January)
-     * @param array $daysInMonth Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
+     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     *
      * @return \DateTime
      */
-    public function nextInEveryYear(array $monthOffsets  = array(1), array $daysInMonth = array(1), array $times = array())
+    public function nextInEveryYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
-        $monthsByOffset = array();
+        $monthsByOffset = [];
         foreach (range(1, 12) as $month) {
-            $monthsByOffset[$month] = array($month);
+            $monthsByOffset[$month] = [$month];
         }
 
         return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
     }
 
     /**
-     * @param array $times
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
-    protected function getDefaultHours(array $times = array())
+    protected function getDefaultHours(array $times = [])
     {
-        if (0 === count($times)) {
-            return array(new \DateTime('00:00:00'));
+        if (0 === \count($times)) {
+            return [new \DateTime('00:00:00')];
         }
 
         foreach ($times as $time) {
@@ -183,13 +193,11 @@ class FrequencyGenerator
     }
 
     /**
-     * @param \DateTime $date
-     * @param array $times
      * @return array
      */
     protected function getDatesWithTimes(\DateTime $date, array $times)
     {
-        $dates = array();
+        $dates = [];
         /** @var \DateTime $time */
         foreach ($times as $time) {
             $dateWithTime = clone $date;
@@ -201,7 +209,6 @@ class FrequencyGenerator
     }
 
     /**
-     * @param array $frequencies
      * @return \DateTime
      */
     protected function getNextFrequency(array $frequencies)
@@ -223,18 +230,18 @@ class FrequencyGenerator
     }
 
     /**
-     * @param int $year
-     * @param int $month
-     * @param int $searchDay
-     * @param \DateTime $time
-     * @param boolean $canChangeMonth
+     * @param int  $year
+     * @param int  $month
+     * @param int  $searchDay
+     * @param bool $canChangeMonth
+     *
      * @return \DateTime|null
      */
     protected function searchNextDayWithTimeMonthly($year, $month, $searchDay, \DateTime $time, $canChangeMonth)
     {
         $limit = new \DateTime('now');
         $monthFound = false;
-        $month = \DateTime::createFromFormat('Y-m-d', \sprintf('%s-%s-1', $year, $month));
+        $month = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $year, $month));
 
         //Search month
         while (!$monthFound) {
@@ -245,13 +252,13 @@ class FrequencyGenerator
 
             //Search day in test month
             while (!$dayFound) {
-                if (\checkdate($intMonth, $intDay, $intYear)) {
+                if (checkdate($intMonth, $intDay, $intYear)) {
                     //Day found in test month
                     $dayFound = true;
                 } else {
                     //Day not found in test month
                     //Back 1 day
-                    $intDay--;
+                    --$intDay;
                 }
             }
 
@@ -275,20 +282,19 @@ class FrequencyGenerator
     }
 
     /**
-     * @param array $monthOffsets
-     * @param array $daysInMonth
-     * @param array $times
      * @param array $monthsByOffset
-     * @return \DateTime
+     *
      * @throws \Exception
+     *
+     * @return \DateTime
      */
-    protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times = array(), $monthsByOffset)
+    protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, $monthsByOffset)
     {
         $times = $this->getDefaultHours($times);
-        $frequencies = array();
+        $frequencies = [];
 
         foreach ($monthOffsets as $monthOffset) {
-            if (!is_integer($monthOffset) || $monthOffset < 1 || $monthOffset > count($monthsByOffset)) {
+            if (!\is_int($monthOffset) || $monthOffset < 1 || $monthOffset > \count($monthsByOffset)) {
                 throw new \Exception('Bad month offset'.$monthOffset);
             }
 
@@ -296,15 +302,15 @@ class FrequencyGenerator
                 foreach ($daysInMonth as $dayInMonth) {
                     foreach ($times as $time) {
                         $dayFound = false;
-                        $testMonth = \DateTime::createFromFormat('Y-m-d', \sprintf('%s-%s-1', date('Y'), $month));
+                        $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', date('Y'), $month));
                         while (!$dayFound) {
                             $frequency = $this->searchNextDayWithTimeMonthly($testMonth->format('Y'), $testMonth->format('m'), $dayInMonth, $time, false);
                             if ($frequency) {
                                 $dayFound = true;
-                                array_push($frequencies, $frequency);
+                                $frequencies[] = $frequency;
                             } else {
-                                $countMonthsByOffset = count($monthsByOffset);
-                                for ($i = 1; $i <= $countMonthsByOffset; $i++) {
+                                $countMonthsByOffset = \count($monthsByOffset);
+                                for ($i = 1; $i <= $countMonthsByOffset; ++$i) {
                                     $testMonth->modify('first day of next month');
                                 }
                             }
