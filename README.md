@@ -2,8 +2,7 @@
 
 Get the next date (DateTime object) by frequency.
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d9edc83c-4f02-46c3-828e-40ac59bc47de/big.png)](https://insight.sensiolabs.com/projects/d9edc83c-4f02-46c3-828e-40ac59bc47de)
-
+[![Build Status](https://travis-ci.com/e-commit/frequency-generator.svg?branch=master)](https://travis-ci.com/e-commit/frequency-generator)
 
 ## Installation ##
 
