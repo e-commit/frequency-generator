@@ -18,12 +18,52 @@ use PHPUnit\Framework\TestCase;
 
 class FrequencyGeneratorTest extends TestCase
 {
+    public function testGenerateDateTimeImmutableDefault(): void
+    {
+        $generator = $this->createFrequencyGenerator('2020-10-01 15:00:00');
+
+        $reflection = new \ReflectionClass(FrequencyGenerator::class);
+        $generateDateTimeImmutableProperty = $reflection->getProperty('generateDateTimeImmutable');
+        $generateDateTimeImmutableProperty->setAccessible(true);
+
+        $this->assertFalse($generateDateTimeImmutableProperty->getValue($generator));
+    }
+
+    /**
+     * @dataProvider getTestGenerateDateTimeImmutableProvider
+     */
+    public function testGenerateDateTimeImmutable($value): void
+    {
+        $generator = $this->createFrequencyGenerator('2020-10-01 15:00:00');
+
+        $reflection = new \ReflectionClass(FrequencyGenerator::class);
+        $generateDateTimeImmutableProperty = $reflection->getProperty('generateDateTimeImmutable');
+        $generateDateTimeImmutableProperty->setAccessible(true);
+
+        $result = $generator->generateDateTimeImmutable($value);
+        $this->assertInstanceOf(FrequencyGenerator::class, $result);
+        $this->assertSame($value, $generateDateTimeImmutableProperty->getValue($generator));
+    }
+
+    public function getTestGenerateDateTimeImmutableProvider(): array
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
     public function testNextInEveryDayEmpty(): void
     {
         $generator = $this->createFrequencyGenerator('2020-10-01 15:00:00');
 
         $result = $generator->nextInEveryDay();
         $this->checkResultDate('2020-10-02 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryDay();
+        $this->checkResultDate('2020-10-02 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -38,6 +78,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryDay($this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryDay($this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryDay($this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryDayProvider(): array
@@ -66,6 +114,11 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryWeek();
         $this->checkResultDate('2020-10-05 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryWeek();
+        $this->checkResultDate('2020-10-05 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -80,6 +133,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryWeek($days, $this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryWeek($days, $this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryWeek($days, $this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryWeekProvider(): array
@@ -134,6 +195,11 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryMonth();
         $this->checkResultDate('2020-11-01 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryMonth();
+        $this->checkResultDate('2020-11-01 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -148,6 +214,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryMonth($days, $this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryMonth($days, $this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryMonth($days, $this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryMonthProvider(): array
@@ -207,6 +281,11 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryQuart();
         $this->checkResultDate('2020-04-01 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryQuart();
+        $this->checkResultDate('2020-04-01 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -221,6 +300,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryQuart($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryQuart($monthOffsets, $daysInMonth, $this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryQuart($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryQuartProvider(): array
@@ -303,6 +390,11 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryHalfYear();
         $this->checkResultDate('2020-07-01 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryHalfYear();
+        $this->checkResultDate('2020-07-01 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -317,6 +409,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryHalfYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryHalfYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryHalfYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryHalfYearProvider(): array
@@ -399,6 +499,11 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryYear();
         $this->checkResultDate('2021-01-01 00:00:00', \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryYear();
+        $this->checkResultDate('2021-01-01 00:00:00', \DateTimeImmutable::class, $result);
     }
 
     /**
@@ -413,6 +518,14 @@ class FrequencyGeneratorTest extends TestCase
 
         $result = $generator->nextInEveryYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
+
+        $generator->generateDateTimeImmutable(true);
+
+        $result = $generator->nextInEveryYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTime::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
+
+        $result = $generator->nextInEveryYear($monthOffsets, $daysInMonth, $this->createDates($times, \DateTimeImmutable::class));
+        $this->checkResultDate($expected, \DateTimeImmutable::class, $result);
     }
 
     public function getTestNextInEveryYearProvider(): array

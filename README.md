@@ -96,6 +96,30 @@ $dateTimeObject = $generator->nextInEveryYear(array(1), array(1, 15), array(new 
 * **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
+## Generate DateTimeImmutable objects ##
+
+The generator generates by default DateTime objects.
+
+The generator can generate DateTimeImmutable objets with `generateDateTimeImmutable` method: 
+
+```php
+use Ecommit\FrequencyGenerator\FrequencyGenerator;
+
+$generator = new FrequencyGenerator();
+
+$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+echo get_class($date); //This example will output "DateTime"
+
+$generator->generateDateTimeImmutable(true);
+$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+echo get_class($date); //This example will output "DateTimeImmutable"
+
+$generator->generateDateTimeImmutable(false);
+$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+echo get_class($date); //This example will output "DateTime"
+```
+
+
 ## License ##
 
 This librairy is under the MIT license. See the complete license in *LICENSE* file.

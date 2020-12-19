@@ -15,12 +15,21 @@ namespace Ecommit\FrequencyGenerator;
 
 class FrequencyGenerator
 {
+    protected $generateDateTimeImmutable = false;
+
+    public function generateDateTimeImmutable(bool $generateDateTimeImmutable): self
+    {
+        $this->generateDateTimeImmutable = $generateDateTimeImmutable;
+
+        return $this;
+    }
+
     /**
      * Return the next date for "every day" frequency.
      *
      * @param array $times Array of DateTimeInterface objects. Default: Only "00:00:00"
      */
-    public function nextInEveryDay(array $times = []): \DateTime
+    public function nextInEveryDay(array $times = []): \DateTimeInterface
     {
         $times = $this->getDefaultHours($times);
         $frequencies = [];
@@ -35,7 +44,7 @@ class FrequencyGenerator
             $frequencies[] = $tomorrow;
         }
 
-        return $this->getNextFrequency($frequencies);
+        return $this->createResult($this->getNextFrequency($frequencies));
     }
 
     /**
@@ -46,7 +55,7 @@ class FrequencyGenerator
      *
      * @throws \Exception
      */
-    public function nextInEveryWeek(array $days = [1], array $times = []): \DateTime
+    public function nextInEveryWeek(array $days = [1], array $times = []): \DateTimeInterface
     {
         $availabledDays = [
             1 => 'monday',
@@ -80,7 +89,7 @@ class FrequencyGenerator
             }
         }
 
-        return $this->getNextFrequency($frequencies);
+        return $this->createResult($this->getNextFrequency($frequencies));
     }
 
     /**
@@ -91,7 +100,7 @@ class FrequencyGenerator
      *
      * @throws \Exception
      */
-    public function nextInEveryMonth(array $days = [1], array $times = []): \DateTime
+    public function nextInEveryMonth(array $days = [1], array $times = []): \DateTimeInterface
     {
         $now = $this->getNow();
         $times = $this->getDefaultHours($times);
@@ -111,7 +120,7 @@ class FrequencyGenerator
             }
         }
 
-        return $this->getNextFrequency($frequencies);
+        return $this->createResult($this->getNextFrequency($frequencies));
     }
 
     /**
@@ -121,7 +130,7 @@ class FrequencyGenerator
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
      * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      */
-    public function nextInEveryQuart(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTime
+    public function nextInEveryQuart(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTimeInterface
     {
         if (0 === \count($monthOffsets)) {
             $monthOffsets = [1];
@@ -137,7 +146,7 @@ class FrequencyGenerator
             3 => [3, 6, 9, 12],
         ];
 
-        return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
+        return $this->createResult($this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset));
     }
 
     /**
@@ -147,7 +156,7 @@ class FrequencyGenerator
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
      * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      */
-    public function nextInEveryHalfYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTime
+    public function nextInEveryHalfYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTimeInterface
     {
         if (0 === \count($monthOffsets)) {
             $monthOffsets = [1];
@@ -166,7 +175,7 @@ class FrequencyGenerator
             6 => [6, 12],
         ];
 
-        return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
+        return $this->createResult($this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset));
     }
 
     /**
@@ -176,7 +185,7 @@ class FrequencyGenerator
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
      * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      */
-    public function nextInEveryYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTime
+    public function nextInEveryYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = []): \DateTimeInterface
     {
         if (0 === \count($monthOffsets)) {
             $monthOffsets = [1];
@@ -191,7 +200,7 @@ class FrequencyGenerator
             $monthsByOffset[$month] = [$month];
         }
 
-        return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
+        return $this->createResult($this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset));
     }
 
     final protected function getDefaultHours(array $times = []): array
@@ -321,6 +330,15 @@ class FrequencyGenerator
         }
 
         return $this->getNextFrequency($frequencies);
+    }
+
+    final protected function createResult(\DateTime $date): \DateTimeInterface
+    {
+        if (true === $this->generateDateTimeImmutable) {
+            return \DateTimeImmutable::createFromMutable($date);
+        }
+
+        return $date;
     }
 
     protected function getNow(): \DateTime
