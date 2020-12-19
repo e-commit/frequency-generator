@@ -50,7 +50,7 @@ class FrequencyGenerator
      *
      * @return \DateTime
      */
-    public function nextInEveryWeek(array $days, array $times = [])
+    public function nextInEveryWeek(array $days = [1], array $times = [])
     {
         $availabledDays = [
             1 => 'monday',
@@ -61,6 +61,10 @@ class FrequencyGenerator
             6 => 'saturday',
             7 => 'sunday',
         ];
+
+        if (0 === \count($days)) {
+            $days = [1];
+        }
 
         $now = new \DateTime('now');
         $times = $this->getDefaultHours($times);
@@ -97,6 +101,10 @@ class FrequencyGenerator
         $times = $this->getDefaultHours($times);
         $frequencies = [];
 
+        if (0 === \count($days)) {
+            $days = [1];
+        }
+
         foreach ($days as $day) {
             if (!\is_int($day) || $day < 1 || $day > 31) {
                 throw new \Exception('Bad day '.$day);
@@ -121,6 +129,14 @@ class FrequencyGenerator
      */
     public function nextInEveryQuart(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
+        if (0 === \count($monthOffsets)) {
+            $monthOffsets = [1];
+        }
+
+        if (0 === \count($daysInMonth)) {
+            $daysInMonth = [1];
+        }
+
         $monthsByOffset = [
             1 => [1, 4, 7, 10],
             2 => [2, 5, 8, 11],
@@ -141,6 +157,14 @@ class FrequencyGenerator
      */
     public function nextInEveryHalfYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
+        if (0 === \count($monthOffsets)) {
+            $monthOffsets = [1];
+        }
+
+        if (0 === \count($daysInMonth)) {
+            $daysInMonth = [1];
+        }
+
         $monthsByOffset = [
             1 => [1, 7],
             2 => [2, 8],
@@ -164,6 +188,14 @@ class FrequencyGenerator
      */
     public function nextInEveryYear(array $monthOffsets = [1], array $daysInMonth = [1], array $times = [])
     {
+        if (0 === \count($monthOffsets)) {
+            $monthOffsets = [1];
+        }
+
+        if (0 === \count($daysInMonth)) {
+            $daysInMonth = [1];
+        }
+
         $monthsByOffset = [];
         foreach (range(1, 12) as $month) {
             $monthsByOffset[$month] = [$month];
