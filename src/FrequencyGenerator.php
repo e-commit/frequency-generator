@@ -31,7 +31,7 @@ class FrequencyGenerator
      */
     public function nextInEveryDay(array $times = []): \DateTimeInterface
     {
-        $times = $this->getDefaultHours($times);
+        $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         /** @var \DateTimeInterface $time */
@@ -72,7 +72,7 @@ class FrequencyGenerator
         }
 
         $now = $this->getNow();
-        $times = $this->getDefaultHours($times);
+        $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         foreach ($days as $day) {
@@ -103,7 +103,7 @@ class FrequencyGenerator
     public function nextInEveryMonth(array $days = [1], array $times = []): \DateTimeInterface
     {
         $now = $this->getNow();
-        $times = $this->getDefaultHours($times);
+        $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         if (0 === \count($days)) {
@@ -203,7 +203,7 @@ class FrequencyGenerator
         return $this->createResult($this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset));
     }
 
-    final protected function getDefaultHours(array $times = []): array
+    final protected function getDefaultTimes(array $times = []): array
     {
         if (0 === \count($times)) {
             return [new \DateTime('00:00:00')];
@@ -296,7 +296,7 @@ class FrequencyGenerator
     final protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, array $monthsByOffset): \DateTime
     {
         $now = $this->getNow();
-        $times = $this->getDefaultHours($times);
+        $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         foreach ($monthOffsets as $monthOffset) {
