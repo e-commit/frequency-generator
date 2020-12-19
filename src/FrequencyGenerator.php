@@ -29,10 +29,10 @@ class FrequencyGenerator
 
         /** @var \DateTime $time */
         foreach ($times as $time) {
-            $today = new \DateTime('now');
+            $today = $this->getNow();
             $today->setTime($time->format('H'), $time->format('i'), $time->format('s'));
             $frequencies[] = $today;
-            $tomorrow = new \DateTime('now +1 day');
+            $tomorrow = $this->getNow()->modify('+1 day');
             $tomorrow->setTime($time->format('H'), $time->format('i'), $time->format('s'));
             $frequencies[] = $tomorrow;
         }
@@ -66,7 +66,7 @@ class FrequencyGenerator
             $days = [1];
         }
 
-        $now = new \DateTime('now');
+        $now = $this->getNow();
         $times = $this->getDefaultHours($times);
         $frequencies = [];
 
@@ -75,7 +75,8 @@ class FrequencyGenerator
                 throw new \Exception('Bad day '.$day);
             }
 
-            $frequency = new \DateTime(sprintf('next %s', $availabledDays[$day]));
+            $frequency = $this->getNow();
+            $frequency->modify(sprintf('next %s', $availabledDays[$day]));
             $frequencies = array_merge($frequencies, $this->getDatesWithTimes($frequency, $times));
 
             if ($day == $now->format('N')) {
@@ -98,6 +99,7 @@ class FrequencyGenerator
      */
     public function nextInEveryMonth(array $days = [1], array $times = [])
     {
+        $now = $this->getNow();
         $times = $this->getDefaultHours($times);
         $frequencies = [];
 
@@ -111,7 +113,7 @@ class FrequencyGenerator
             }
 
             foreach ($times as $time) {
-                $frequencies[] = $this->searchNextDayWithTimeMonthly(date('Y'), date('m'), $day, $time, true);
+                $frequencies[] = $this->searchNextDayWithTimeMonthly((int) $now->format('Y'), (int) $now->format('m'), $day, $time, true);
             }
         }
 
@@ -245,7 +247,7 @@ class FrequencyGenerator
      */
     protected function getNextFrequency(array $frequencies)
     {
-        $now = new \DateTime('now');
+        $now = $this->getNow();
         $minFrequency = null;
         /** @var \DateTime $frequency */
         foreach ($frequencies as $frequency) {
@@ -271,7 +273,7 @@ class FrequencyGenerator
      */
     protected function searchNextDayWithTimeMonthly($year, $month, $searchDay, \DateTimeInterface $time, $canChangeMonth)
     {
-        $limit = new \DateTime('now');
+        $limit = $this->getNow();
         $monthFound = false;
         $month = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $year, $month));
 
@@ -322,6 +324,7 @@ class FrequencyGenerator
      */
     protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, $monthsByOffset)
     {
+        $now = $this->getNow();
         $times = $this->getDefaultHours($times);
         $frequencies = [];
 
@@ -337,7 +340,7 @@ class FrequencyGenerator
                     }
                     foreach ($times as $time) {
                         $dayFound = false;
-                        $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', date('Y'), $month));
+                        $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $now->format('Y'), $month));
                         while (!$dayFound) {
                             $frequency = $this->searchNextDayWithTimeMonthly($testMonth->format('Y'), $testMonth->format('m'), $dayInMonth, $time, false);
                             if ($frequency) {
@@ -356,5 +359,10 @@ class FrequencyGenerator
         }
 
         return $this->getNextFrequency($frequencies);
+    }
+
+    protected function getNow(): \DateTime
+    {
+        return new \DateTime('now');
     }
 }
