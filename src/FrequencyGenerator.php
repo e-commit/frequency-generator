@@ -327,7 +327,7 @@ class FrequencyGenerator
 
         foreach ($monthOffsets as $monthOffset) {
             if (!\is_int($monthOffset) || $monthOffset < 1 || $monthOffset > \count($monthsByOffset)) {
-                throw new \Exception('Bad month offset'.$monthOffset);
+                throw new \Exception('Bad month offset '.$monthOffset);
             }
 
             foreach ($monthsByOffset[$monthOffset] as $month) {
