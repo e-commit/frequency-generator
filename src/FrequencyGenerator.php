@@ -194,7 +194,7 @@ class FrequencyGenerator
         return $this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset);
     }
 
-    protected function getDefaultHours(array $times = []): array
+    final protected function getDefaultHours(array $times = []): array
     {
         if (0 === \count($times)) {
             return [new \DateTime('00:00:00')];
@@ -209,7 +209,7 @@ class FrequencyGenerator
         return $times;
     }
 
-    protected function getDatesWithTimes(\DateTime $date, array $times): array
+    final protected function getDatesWithTimes(\DateTime $date, array $times): array
     {
         $dates = [];
         /** @var \DateTimeInterface $time */
@@ -222,7 +222,7 @@ class FrequencyGenerator
         return $dates;
     }
 
-    protected function getNextFrequency(array $frequencies): \DateTime
+    final protected function getNextFrequency(array $frequencies): \DateTime
     {
         $now = $this->getNow();
         $minFrequency = null;
@@ -240,7 +240,7 @@ class FrequencyGenerator
         return $minFrequency;
     }
 
-    protected function searchNextDayWithTimeMonthly(int $year, int $month, int $searchDay, \DateTimeInterface $time, bool $canChangeMonth): ?\DateTime
+    final protected function searchNextDayWithTimeMonthly(int $year, int $month, int $searchDay, \DateTimeInterface $time, bool $canChangeMonth): ?\DateTime
     {
         $limit = $this->getNow();
         $monthFound = false;
@@ -284,7 +284,7 @@ class FrequencyGenerator
         return $testDate;
     }
 
-    protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, array $monthsByOffset): \DateTime
+    final protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, array $monthsByOffset): \DateTime
     {
         $now = $this->getNow();
         $times = $this->getDefaultHours($times);
