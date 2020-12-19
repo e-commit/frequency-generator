@@ -26,7 +26,7 @@ $generator = new FrequencyGenerator();
 
 ```php
 //Every day at 08:00:00 and 10:00:00
-$dateTimeObject = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryDay([new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -37,7 +37,7 @@ Arguments :
 
 ```php
 //Every monday (at 08:00:00 and 10:00:00) and tuesday (at 08:00:00 and 10:00:00)
-$dateTimeObject = $generator->nextInEveryWeek(array(1, 2), array(new \DateTime('06:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryWeek([1, 2], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -49,7 +49,7 @@ Arguments :
 
 ```php
 //Every 1st (at 08:00:00 and 10:00:00) and 2nd (at 08:00:00 and 10:00:00)
-$dateTimeObject = $generator->nextInEveryMonth(array(1, 2), array(new \DateTime('06:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryMonth([1, 2], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -61,7 +61,7 @@ Arguments :
 
 ```php
 //Every 1st and 15th February, May, August and November (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryQuart(array(2), array(1, 15), array(new \DateTime('06:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryQuart([2], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -74,7 +74,7 @@ Arguments :
 
 ```php
 //Every 1st and 15th February and August (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryHalfYear(array(2), array(1, 15), array(new \DateTime('06:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryHalfYear([2], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
 ```
 
 
@@ -87,7 +87,7 @@ $dateTimeObject = $generator->nextInEveryHalfYear(array(2), array(1, 15), array(
 
 ```php
 //Every 1st and 15th January, February, March, April, May and June (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryYear(array(1), array(1, 15), array(new \DateTime('06:00:00'), new \DateTime('08:00:00')));
+$dateTimeObject = $generator->nextInEveryYear([1], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
 ```
 
 
@@ -107,15 +107,15 @@ use Ecommit\FrequencyGenerator\FrequencyGenerator;
 
 $generator = new FrequencyGenerator();
 
-$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+$date = $generator->nextInEveryDay([new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 echo get_class($date); //This example will output "DateTime"
 
 $generator->generateDateTimeImmutable(true);
-$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+$date = $generator->nextInEveryDay([new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 echo get_class($date); //This example will output "DateTimeImmutable"
 
 $generator->generateDateTimeImmutable(false);
-$date = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), new \DateTime('08:00:00')));
+$date = $generator->nextInEveryDay([new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 echo get_class($date); //This example will output "DateTime"
 ```
 
