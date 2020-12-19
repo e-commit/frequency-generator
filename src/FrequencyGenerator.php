@@ -84,7 +84,7 @@ class FrequencyGenerator
             $frequency->modify(sprintf('next %s', $availabledDays[$day]));
             $frequencies = array_merge($frequencies, $this->getDatesWithTimes($frequency, $times));
 
-            if ($day == $now->format('N')) {
+            if ($day === (int) $now->format('N')) {
                 $frequencies = array_merge($frequencies, $this->getDatesWithTimes($now, $times));
             }
         }
