@@ -13,11 +13,15 @@
     "autoload": {
         "psr-4": { "Ecommit\\FrequencyGenerator\\": "src/" }
     },
+    "autoload-dev": {
+        "psr-4": { "Ecommit\\FrequencyGenerator\\Tests\\": "tests/" }
+    },
     "require": {
         "php": "^7.2|^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.17.1"
+        "friendsofphp/php-cs-fixer": "^2.17.1",
+        "phpunit/phpunit": "^8.4"
     },
     "config": {
         "sort-packages": true
