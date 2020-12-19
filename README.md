@@ -37,7 +37,7 @@ Arguments :
 
 ```php
 //Every monday (at 08:00:00 and 10:00:00) and tuesday (at 08:00:00 and 10:00:00)
-$dateTimeObject = $generator->nextInEveryWeek([1, 2], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
+$dateTimeObject = $generator->nextInEveryWeek([1, 2], [new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -49,7 +49,7 @@ Arguments :
 
 ```php
 //Every 1st (at 08:00:00 and 10:00:00) and 2nd (at 08:00:00 and 10:00:00)
-$dateTimeObject = $generator->nextInEveryMonth([1, 2], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
+$dateTimeObject = $generator->nextInEveryMonth([1, 2], [new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -61,7 +61,7 @@ Arguments :
 
 ```php
 //Every 1st and 15th February, May, August and November (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryQuart([2], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
+$dateTimeObject = $generator->nextInEveryQuart([2], [1, 15], [new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 Arguments :
@@ -74,7 +74,7 @@ Arguments :
 
 ```php
 //Every 1st and 15th February and August (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryHalfYear([2], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
+$dateTimeObject = $generator->nextInEveryHalfYear([2], [1, 15], [new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 
@@ -86,8 +86,8 @@ $dateTimeObject = $generator->nextInEveryHalfYear([2], [1, 15], [new \DateTime('
 ### Frequency "every year" ###
 
 ```php
-//Every 1st and 15th January, February, March, April, May and June (at 08:00:00 and 10:00:00)  
-$dateTimeObject = $generator->nextInEveryYear([1], [1, 15], [new \DateTime('06:00:00'), new \DateTime('08:00:00')]);
+//Every 1st and 15th January (at 08:00:00 and 10:00:00)  
+$dateTimeObject = $generator->nextInEveryYear([1], [1, 15], [new \DateTime('10:00:00'), new \DateTime('08:00:00')]);
 ```
 
 
