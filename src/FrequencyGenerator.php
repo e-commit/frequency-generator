@@ -332,6 +332,9 @@ class FrequencyGenerator
 
             foreach ($monthsByOffset[$monthOffset] as $month) {
                 foreach ($daysInMonth as $dayInMonth) {
+                    if (!\is_int($dayInMonth) || $dayInMonth < 1 || $dayInMonth > 31) {
+                        throw new \Exception('Bad day '.$dayInMonth);
+                    }
                     foreach ($times as $time) {
                         $dayFound = false;
                         $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', date('Y'), $month));
