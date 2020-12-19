@@ -602,6 +602,31 @@ class FrequencyGeneratorTest extends TestCase
         $generator->nextInEveryYear([], [], ['fake']);
     }
 
+    /**
+     * @dataProvider getTestGetNextFrequencyProvider
+     */
+    public function testGetNextFrequency(array $frequencies, string $expected): void
+    {
+        $generator = $this->createFrequencyGenerator('2020-10-01 15:00:00');
+
+        $reflection = new \ReflectionClass(FrequencyGenerator::class);
+        $getNextFrequencyMethod = $reflection->getMethod('getNextFrequency');
+        $getNextFrequencyMethod->setAccessible(true);
+
+        $result = $getNextFrequencyMethod->invoke($generator, $this->createDates($frequencies, \DateTime::class));
+        $this->checkResultDate($expected, \DateTime::class, $result);
+    }
+
+    public function getTestGetNextFrequencyProvider(): array
+    {
+        return [
+            [['2020-10-01 16:00:00', '2020-10-01 17:00:00', '2020-10-02 15:00:00'], '2020-10-01 16:00:00'],
+            [['2020-10-02 15:00:00', '2020-10-01 17:00:00', '2020-10-01 16:00:00'], '2020-10-01 16:00:00'],
+            [['2020-09-01 16:00:00', '2020-09-01 17:00:00', '2020-10-02 15:00:00'], '2020-10-02 15:00:00'],
+            [['2020-09-01 16:00:00', '2020-09-01 17:00:00', '2020-09-02 15:00:00'], '2020-10-01 15:00:00'],
+        ];
+    }
+
     protected function checkResultDate(string $expectedDate, $expectedClass, $result): void
     {
         $this->assertInstanceOf($expectedClass, $result);

@@ -237,7 +237,7 @@ class FrequencyGenerator
         $minFrequency = null;
         /** @var \DateTime $frequency */
         foreach ($frequencies as $frequency) {
-            if ($frequency->getTimestamp() > $now->getTimestamp() && (null === $minFrequency || $frequency->getTimestamp() < $minFrequency->getTimestamp())) {
+            if ($frequency > $now && (null === $minFrequency || $frequency < $minFrequency)) {
                 $minFrequency = $frequency;
             }
         }
@@ -277,7 +277,7 @@ class FrequencyGenerator
             //Test day
             $testDate = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $intYear, $intMonth, $intDay));
             $testDate->setTime((int) $time->format('H'), (int) $time->format('i'), (int) $time->format('s'));
-            if ($testDate->getTimestamp() > $limit->getTimestamp()) {
+            if ($testDate > $limit) {
                 //Date is ok
                 $monthFound = true;
             } else {
