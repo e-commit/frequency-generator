@@ -30,7 +30,7 @@ $dateTimeObject = $generator->nextInEveryDay(array(new \DateTime('10:00:00'), ne
 ```
 
 Arguments :
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ### Frequency "every week" ###
@@ -42,7 +42,7 @@ $dateTimeObject = $generator->nextInEveryWeek(array(1, 2), array(new \DateTime('
 
 Arguments :
 * **array $days** Array of days in week (integers). (1=Monday => 7=Sunday). Default: Only *1* (monday)
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ### Frequency "every month" ###
@@ -54,7 +54,7 @@ $dateTimeObject = $generator->nextInEveryMonth(array(1, 2), array(new \DateTime(
 
 Arguments :
 * **array $days** Array of days in month (integers). (1=>31). Default: Only *1* (1st)
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ### Frequency "every quart" ###
@@ -67,7 +67,7 @@ $dateTimeObject = $generator->nextInEveryQuart(array(2), array(1, 15), array(new
 Arguments :
 * **array $monthOffsets** Array of month offsets in quart (integers). (1 = January, April, July, October. 2 = February, May, August, November. 3 = March, June, September, December). Default: Only *1* (January, April, July, October)
 * **array $daysInMonth** Array of days in month (integers). (1=>31). Default: Only *1* (1st)
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ### Frequency "every half year" ###
@@ -80,7 +80,7 @@ $dateTimeObject = $generator->nextInEveryHalfYear(array(2), array(1, 15), array(
 
 * **array $monthOffsets** Array of month offsets in half year (integers). 1 = January, July. 2 = February, August. 3 = March, September. 4 = April, October. 5 = May , November. 6 = June, December). Default: Only *1* (January, July)
 * **array $daysInMonth** Array of days in month (integers). (1=>31). Default: Only *1* (1st)
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ### Frequency "every year" ###
@@ -93,7 +93,7 @@ $dateTimeObject = $generator->nextInEveryYear(array(1), array(1, 15), array(new 
 
 * **array $monthOffsets** Array of month offsets in year (integers). (1 = January => 12 => December). Default: Only *1* (January)
 * **array $daysInMonth** Array of days in month (integers). (1=>31). Default: Only *1* (1st)
-* **array $times** Times (Array of DateTime objects). Default: only *00:00:00*
+* **array $times** Times (Array of DateTime or DateTimeImmutable objects). Default: only *00:00:00*
 
 
 ## License ##

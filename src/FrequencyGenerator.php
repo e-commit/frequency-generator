@@ -18,7 +18,7 @@ class FrequencyGenerator
     /**
      * Return the next date for "every day" frequency.
      *
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @return \DateTime
      */
@@ -44,7 +44,7 @@ class FrequencyGenerator
      * Return the next date for "every week" frequency.
      *
      * @param array $days  Array of days in week (integers). (1=Monday => 7=Sunday). Default: Only "1" (monday)
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @throws \Exception
      *
@@ -90,7 +90,7 @@ class FrequencyGenerator
      * Return the next date for "every month" frequency.
      *
      * @param array $days  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @throws \Exception
      *
@@ -123,7 +123,7 @@ class FrequencyGenerator
      *
      * @param array $monthOffsets Array of month offsets in quart (integers). (1 = January, April, July, October. 2 = February, May, August, November. 3 = March, June, September, December). Default: Only "1" (January, April, July, October)
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @return \DateTime
      */
@@ -151,7 +151,7 @@ class FrequencyGenerator
      *
      * @param array $monthOffsets Array of month offsets in half year (integers). (1 = January, July. 2 = February, August. 3 = March, September. 4 = April, October. 5 = May , November. 6 = June, December). Default: Only "1" (January, July)
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @return \DateTime
      */
@@ -182,7 +182,7 @@ class FrequencyGenerator
      *
      * @param array $monthOffsets Array of month offsets in year (integers). (1 = January => 12 => December). Default: Only "1" (January)
      * @param array $daysInMonth  Array of days in month (integers). (1=>31). Default: Only "1" (1st)
-     * @param array $times        Array of DateTime objects. Default: Only "00:00:00"
+     * @param array $times        Array of DateTimeInterface objects. Default: Only "00:00:00"
      *
      * @return \DateTime
      */
@@ -216,8 +216,8 @@ class FrequencyGenerator
         }
 
         foreach ($times as $time) {
-            if (!($time instanceof \DateTime)) {
-                throw new \Exception('Times must be DateTime objects');
+            if (!($time instanceof \DateTimeInterface)) {
+                throw new \Exception('Times must be DateTimeInterface objects');
             }
         }
 
@@ -230,7 +230,7 @@ class FrequencyGenerator
     protected function getDatesWithTimes(\DateTime $date, array $times)
     {
         $dates = [];
-        /** @var \DateTime $time */
+        /** @var \DateTimeInterface $time */
         foreach ($times as $time) {
             $dateWithTime = clone $date;
             $dateWithTime->setTime($time->format('H'), $time->format('i'), $time->format('s'));
@@ -269,7 +269,7 @@ class FrequencyGenerator
      *
      * @return \DateTime|null
      */
-    protected function searchNextDayWithTimeMonthly($year, $month, $searchDay, \DateTime $time, $canChangeMonth)
+    protected function searchNextDayWithTimeMonthly($year, $month, $searchDay, \DateTimeInterface $time, $canChangeMonth)
     {
         $limit = new \DateTime('now');
         $monthFound = false;
