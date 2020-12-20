@@ -72,14 +72,11 @@ class FrequencyGenerator
         }
 
         $now = $this->getNow();
+        $days = $this->checkInts($days, 1, 7, 'Bad day');
         $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         foreach ($days as $day) {
-            if (!\is_int($day) || $day < 1 || $day > 7) {
-                throw new \Exception('Bad day '.$day);
-            }
-
             $frequency = $this->getNow();
             $frequency->modify(sprintf('next %s', $availabledDays[$day]));
             $frequencies = array_merge($frequencies, $this->getDatesWithTimes($frequency, $times));
@@ -103,6 +100,7 @@ class FrequencyGenerator
     public function nextInEveryMonth(array $days = [1], array $times = []): \DateTimeInterface
     {
         $now = $this->getNow();
+        $days = $this->checkInts($days, 1, 31, 'Bad day');
         $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
@@ -111,10 +109,6 @@ class FrequencyGenerator
         }
 
         foreach ($days as $day) {
-            if (!\is_int($day) || $day < 1 || $day > 31) {
-                throw new \Exception('Bad day '.$day);
-            }
-
             foreach ($times as $time) {
                 $frequencies[] = $this->searchNextDayWithTimeMonthly((int) $now->format('Y'), (int) $now->format('m'), $day, $time, true);
             }
@@ -201,6 +195,17 @@ class FrequencyGenerator
         }
 
         return $this->createResult($this->nextByMonthOffset($monthOffsets, $daysInMonth, $times, $monthsByOffset));
+    }
+
+    final protected function checkInts(array $ints, int $minValue, int $maxValue, string $errorMessage): array
+    {
+        return array_map(function ($int) use ($minValue, $maxValue, $errorMessage) {
+            if (!preg_match('/^\d+$/', (string) $int) || $int < $minValue || $int > $maxValue) {
+                throw new \Exception(sprintf('%s %s', $errorMessage, $int));
+            }
+
+            return (int) $int;
+        }, $ints);
     }
 
     final protected function getDefaultTimes(array $times = []): array
@@ -296,19 +301,14 @@ class FrequencyGenerator
     final protected function nextByMonthOffset(array $monthOffsets, array $daysInMonth, array $times, array $monthsByOffset): \DateTime
     {
         $now = $this->getNow();
+        $monthOffsets = $this->checkInts($monthOffsets, 1, \count($monthsByOffset), 'Bad month offset');
+        $daysInMonth = $this->checkInts($daysInMonth, 1, 31, 'Bad day');
         $times = $this->getDefaultTimes($times);
         $frequencies = [];
 
         foreach ($monthOffsets as $monthOffset) {
-            if (!\is_int($monthOffset) || $monthOffset < 1 || $monthOffset > \count($monthsByOffset)) {
-                throw new \Exception('Bad month offset '.$monthOffset);
-            }
-
             foreach ($monthsByOffset[$monthOffset] as $month) {
                 foreach ($daysInMonth as $dayInMonth) {
-                    if (!\is_int($dayInMonth) || $dayInMonth < 1 || $dayInMonth > 31) {
-                        throw new \Exception('Bad day '.$dayInMonth);
-                    }
                     foreach ($times as $time) {
                         $dayFound = false;
                         $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $now->format('Y'), $month));
