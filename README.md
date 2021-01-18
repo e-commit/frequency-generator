@@ -2,7 +2,7 @@
 
 Get the next date (DateTime object) by frequency.
 
-[![Build Status](https://travis-ci.com/e-commit/frequency-generator.svg?branch=master)](https://travis-ci.com/e-commit/frequency-generator)
+![Tests](https://github.com/e-commit/frequency-generator/workflows/Tests/badge.svg)
 
 ## Installation ##
 
