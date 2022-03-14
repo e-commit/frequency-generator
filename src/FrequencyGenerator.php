@@ -260,33 +260,33 @@ class FrequencyGenerator
         $monthFound = false;
         $month = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $year, $month));
 
-        //Search month
+        // Search month
         while (!$monthFound) {
             $dayFound = false;
             $intDay = (int) $searchDay;
             $intMonth = (int) $month->format('m');
             $intYear = (int) $month->format('Y');
 
-            //Search day in test month
+            // Search day in test month
             while (!$dayFound) {
                 if (checkdate($intMonth, $intDay, $intYear)) {
-                    //Day found in test month
+                    // Day found in test month
                     $dayFound = true;
                 } else {
-                    //Day not found in test month
-                    //Back 1 day
+                    // Day not found in test month
+                    // Back 1 day
                     --$intDay;
                 }
             }
 
-            //Test day
+            // Test day
             $testDate = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $intYear, $intMonth, $intDay));
             $testDate->setTime((int) $time->format('H'), (int) $time->format('i'), (int) $time->format('s'));
             if ($testDate > $limit) {
-                //Date is ok
+                // Date is ok
                 $monthFound = true;
             } else {
-                //Date is not ok. Test with text month or return null
+                // Date is not ok. Test with text month or return null
                 if ($canChangeMonth) {
                     $month->modify('first day of next month');
                 } else {
