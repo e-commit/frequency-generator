@@ -15,6 +15,9 @@ namespace Ecommit\FrequencyGenerator;
 
 class FrequencyGenerator
 {
+    /**
+     * @var bool
+     */
     protected $generateDateTimeImmutable = false;
 
     public function generateDateTimeImmutable(bool $generateDateTimeImmutable): self
@@ -261,9 +264,10 @@ class FrequencyGenerator
         $month = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $year, $month));
 
         // Search month
+        $testDate = null;
         while (!$monthFound) {
             $dayFound = false;
-            $intDay = (int) $searchDay;
+            $intDay = $searchDay;
             $intMonth = (int) $month->format('m');
             $intYear = (int) $month->format('Y');
 
