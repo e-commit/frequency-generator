@@ -20,9 +20,13 @@ jobs:
                     -   php-version: '7.4'
                     -   php-version: '8.0'
                     -   php-version: '8.1'
+
+                    #CS
                     -   php-version: '8.1'
                         description: 'with Coding Standards'
                         coding-standards: true
+
+                    #Static Analysis (min PHP version)
                     -   php-version: '7.2'
                         description: 'with Static Analysis'
                         static-analysis: true
