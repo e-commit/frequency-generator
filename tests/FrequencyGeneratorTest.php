@@ -658,9 +658,7 @@ class FrequencyGeneratorTest extends TestCase
         $generator = $this->getMockBuilder(FrequencyGenerator::class)
             ->onlyMethods(['getNow'])
             ->getMock();
-        $generator->method('getNow')->willReturnCallback(function () use ($date) {
-            return new \DateTime($date);
-        });
+        $generator->method('getNow')->willReturnCallback(fn () => new \DateTime($date));
 
         return $generator;
     }
