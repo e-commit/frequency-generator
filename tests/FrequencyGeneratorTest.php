@@ -32,7 +32,7 @@ class FrequencyGeneratorTest extends TestCase
     /**
      * @dataProvider getTestGenerateDateTimeImmutableProvider
      */
-    public function testGenerateDateTimeImmutable($value): void
+    public function testGenerateDateTimeImmutable(bool $value): void
     {
         $generator = $this->createFrequencyGenerator('2020-10-01 15:00:00');
 
@@ -105,7 +105,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryDay(['fake']);
+        $generator->nextInEveryDay(['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryWeekEmpty(): void
@@ -178,7 +178,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad day fake');
 
-        $generator->nextInEveryWeek(['fake'], []);
+        $generator->nextInEveryWeek(['fake'], []); // @phpstan-ignore-line
     }
 
     public function testNextInEveryWeekWithBadTime(): void
@@ -188,7 +188,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryWeek([], ['fake']);
+        $generator->nextInEveryWeek([], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryMonthEmpty(): void
@@ -266,7 +266,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad day fake');
 
-        $generator->nextInEveryMonth(['fake'], []);
+        $generator->nextInEveryMonth(['fake'], []); // @phpstan-ignore-line
     }
 
     public function testNextInEveryMonthWithBadTime(): void
@@ -276,7 +276,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryMonth([], ['fake']);
+        $generator->nextInEveryMonth([], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryQuartEmpty(): void
@@ -357,7 +357,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad month offset fake');
 
-        $generator->nextInEveryQuart(['fake'], []);
+        $generator->nextInEveryQuart(['fake'], []); // @phpstan-ignore-line
     }
 
     public function testNextInEveryQuartWithBadDay(): void
@@ -377,7 +377,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad day fake');
 
-        $generator->nextInEveryQuart([], ['fake']);
+        $generator->nextInEveryQuart([], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryQuartBadTime(): void
@@ -387,7 +387,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryQuart([], [], ['fake']);
+        $generator->nextInEveryQuart([], [], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryHalfYearEmpty(): void
@@ -468,7 +468,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad month offset fake');
 
-        $generator->nextInEveryHalfYear(['fake'], []);
+        $generator->nextInEveryHalfYear(['fake'], []); // @phpstan-ignore-line
     }
 
     public function testNextInEveryHalfYearWithBadDay(): void
@@ -488,7 +488,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad day fake');
 
-        $generator->nextInEveryHalfYear([], ['fake']);
+        $generator->nextInEveryHalfYear([], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryMonthHalfYearBadTime(): void
@@ -498,7 +498,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryHalfYear([], [], ['fake']);
+        $generator->nextInEveryHalfYear([], [], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryYearEmpty(): void
@@ -579,7 +579,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad month offset fake');
 
-        $generator->nextInEveryYear(['fake'], []);
+        $generator->nextInEveryYear(['fake'], []); // @phpstan-ignore-line
     }
 
     public function testNextInEveryearWithBadDay(): void
@@ -599,7 +599,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Bad day fake');
 
-        $generator->nextInEveryYear([], ['fake']);
+        $generator->nextInEveryYear([], ['fake']); // @phpstan-ignore-line
     }
 
     public function testNextInEveryYearBadTime(): void
@@ -609,7 +609,7 @@ class FrequencyGeneratorTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Times must be DateTimeInterface objects');
 
-        $generator->nextInEveryYear([], [], ['fake']);
+        $generator->nextInEveryYear([], [], ['fake']); // @phpstan-ignore-line
     }
 
     /**
@@ -623,6 +623,7 @@ class FrequencyGeneratorTest extends TestCase
         $getNextFrequencyMethod = $reflection->getMethod('getNextFrequency');
         $getNextFrequencyMethod->setAccessible(true);
 
+        /** @var \DateTime $result */
         $result = $getNextFrequencyMethod->invoke($generator, $this->createDates($frequencies, \DateTime::class));
         $this->checkResultDate($expected, \DateTime::class, $result);
     }
@@ -637,7 +638,10 @@ class FrequencyGeneratorTest extends TestCase
         ];
     }
 
-    protected function checkResultDate(string $expectedDate, $expectedClass, $result): void
+    /**
+     * @param class-string $expectedClass
+     */
+    protected function checkResultDate(string $expectedDate, string $expectedClass, \DateTimeInterface $result): void
     {
         $this->assertInstanceOf($expectedClass, $result);
         $this->assertEquals(new $expectedClass($expectedDate), $result);
