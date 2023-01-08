@@ -284,7 +284,7 @@ class FrequencyGenerator
 
         // Search month
         $testDate = null;
-        while (!$monthFound) { // @phpstan-ignore-line
+        while (!$monthFound) {
             $dayFound = false;
             $intDay = $searchDay;
             $intMonth = (int) $month->format('m');
@@ -319,7 +319,7 @@ class FrequencyGenerator
             }
         }
 
-        return $testDate; // @phpstan-ignore-line
+        return $testDate;
     }
 
     /**
