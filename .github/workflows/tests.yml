@@ -62,6 +62,14 @@ jobs:
                     key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
                     restore-keys: composer-${{ runner.os }}-${{ matrix.php-version }}-
 
+            -   name: Remove friendsofphp/php-cs-fixer
+                if: matrix.coding-standards != true
+                run: composer remove friendsofphp/php-cs-fixer --dev --no-update
+
+            -   name: Remove phpstan/phpstan
+                if: matrix.static-analysis != true
+                run: composer remove phpstan/phpstan --dev --no-update
+
             -   name: Install dependencies
                 run: composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
