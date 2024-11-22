@@ -81,7 +81,7 @@ class FrequencyGenerator
 
         foreach ($days as $day) {
             $frequency = $this->getNow();
-            $frequency->modify(sprintf('next %s', $availabledDays[$day]));
+            $frequency->modify(\sprintf('next %s', $availabledDays[$day]));
             $frequencies = array_merge($frequencies, $this->getDatesWithTimes($frequency, $times));
 
             if ($day === (int) $now->format('N')) {
@@ -209,7 +209,7 @@ class FrequencyGenerator
     {
         return array_map(function ($int) use ($minValue, $maxValue, $errorMessage) {
             if (!preg_match('/^\d+$/', (string) $int) || $int < $minValue || $int > $maxValue) {
-                throw new \Exception(sprintf('%s %s', $errorMessage, $int));
+                throw new \Exception(\sprintf('%s %s', $errorMessage, $int));
             }
 
             return (int) $int;
@@ -280,7 +280,7 @@ class FrequencyGenerator
         $limit = $this->getNow();
         $monthFound = false;
         /** @var \DateTime $month */
-        $month = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $year, $month));
+        $month = \DateTime::createFromFormat('Y-m-d', \sprintf('%s-%s-1', $year, $month));
 
         // Search month
         $testDate = null;
@@ -304,7 +304,7 @@ class FrequencyGenerator
 
             // Test day
             /** @var \DateTime $testDate */
-            $testDate = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $intYear, $intMonth, $intDay));
+            $testDate = \DateTime::createFromFormat('Y-m-d', \sprintf('%s-%s-%s', $intYear, $intMonth, $intDay));
             $testDate->setTime((int) $time->format('H'), (int) $time->format('i'), (int) $time->format('s'));
             if ($testDate > $limit) {
                 // Date is ok
@@ -342,7 +342,7 @@ class FrequencyGenerator
                     foreach ($times as $time) {
                         $dayFound = false;
                         /** @var \DateTime $testMonth */
-                        $testMonth = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-1', $now->format('Y'), $month));
+                        $testMonth = \DateTime::createFromFormat('Y-m-d', \sprintf('%s-%s-1', $now->format('Y'), $month));
                         while (!$dayFound) {
                             $frequency = $this->searchNextDayWithTimeMonthly((int) $testMonth->format('Y'), (int) $testMonth->format('m'), $dayInMonth, $time, false);
                             if ($frequency) {
