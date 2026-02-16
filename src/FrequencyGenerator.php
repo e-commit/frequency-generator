@@ -207,7 +207,7 @@ class FrequencyGenerator
      */
     final protected function checkInts(array $ints, int $minValue, int $maxValue, string $errorMessage): array
     {
-        return array_map(function ($int) use ($minValue, $maxValue, $errorMessage) {
+        return array_map(static function ($int) use ($minValue, $maxValue, $errorMessage) {
             if (!preg_match('/^\d+$/', (string) $int) || $int < $minValue || $int > $maxValue) {
                 throw new \Exception(\sprintf('%s %s', $errorMessage, $int));
             }
@@ -228,7 +228,7 @@ class FrequencyGenerator
         }
 
         foreach ($times as $time) {
-            if (!($time instanceof \DateTimeInterface)) {
+            if (!$time instanceof \DateTimeInterface) {
                 throw new \Exception('Times must be DateTimeInterface objects');
             }
         }
